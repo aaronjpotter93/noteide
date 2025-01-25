@@ -1,15 +1,39 @@
 import MDEditor from '@uiw/react-md-editor';
 import { useState } from 'react';
 import { Box } from '@mui/material';
-import CodeBlock from './CodeBlock';
-import rehypeParse from 'rehype-parse';
-import { visit } from 'unist-util-visit';
 
 export default function Editor() {
   const [content, setContent] = useState<string | undefined>('# Welcome to NoteIDE\n\nStart writing your notes here...\n\n```python\nprint("Hello, World!")\n```');
 
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ 
+      height: '100%', 
+      display: 'flex', 
+      flexDirection: 'column',
+      flex: 1,
+      '.w-md-editor': {
+        backgroundColor: '#1E1E1E !important',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+      },
+      '.w-md-editor-content': {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+      },
+      '.w-md-editor-text-pre > code': {
+        color: '#D4D4D4 !important',
+      },
+      '.w-md-editor-text-input': {
+        color: '#D4D4D4 !important',
+      },
+      '.wmde-markdown': {
+        backgroundColor: '#1E1E1E !important',
+        color: '#D4D4D4 !important',
+        flex: 1,
+      },
+    }}>
       <MDEditor
         value={content}
         onChange={setContent}
@@ -17,15 +41,6 @@ export default function Editor() {
         preview="live"
         hideToolbar={false}
         enableScroll={true}
-        previewOptions={{
-          components: {
-            code: ({ inline, children, className }) => {
-              if (inline) return <code>{children}</code>;
-              const language = (className || '').replace('language-', '');
-              return <CodeBlock code={String(children)} language={language || 'text'} />;
-            }
-          }
-        }}
       />
     </Box>
   );
